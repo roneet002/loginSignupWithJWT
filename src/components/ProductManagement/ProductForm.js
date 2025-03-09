@@ -42,7 +42,7 @@ const ProductForm = () => {
 
       navigate("/dashboard");
     } catch (error) {
-      setError(error.response?.data?.message || "An error occurred while adding the product.");
+      setError(error.response?.data?.message);
     }
   };
   
@@ -86,11 +86,7 @@ const ProductForm = () => {
               name="price"
               placeholder="Enter product price"
               value={product.price}
-              onChange={(e) => {
-                if (/^\d*\.?\d*$/.test(e.target.value)) {
-                  handleChange(e);
-                }
-              }}
+              onChange={handleChange}
               required
             />
           </Form.Group>

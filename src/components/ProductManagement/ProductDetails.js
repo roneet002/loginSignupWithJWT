@@ -13,9 +13,7 @@ const ProductDetails = () => {
   useEffect(() => {
     setLoading(true);
     const fetchProductDetails = async () => {
-      console.log("Fetching product details for ID:", id);
-
-      try {
+     try {
         const token = localStorage.getItem("token"); // If authentication is required
         
         const response = await axios.get(`http://localhost:5000/product/products/${id}`, {
@@ -39,16 +37,7 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
-  // if (error) {
-  //   return (
-  //     <Container>
-  //       <h2>Error: {error}</h2>
-  //       <Button variant="secondary" onClick={() => navigate("/dashboard")}>
-  //         Back to Products
-  //       </Button>
-  //     </Container>
-  //   );
-  // }
+
 
   if (Loading) {
     return <h2>Loading...</h2>;

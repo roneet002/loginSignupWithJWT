@@ -42,31 +42,9 @@ const Signup = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState("");
+  const [errorsSuccess, setErrorsSuccess] = useState("");
   const navigate = useNavigate();
 
-  const validateForm = () => {
-    let validationErrors = {};
-    setErrors({});
-    if (!/^[a-z]+$/.test(formData.username)) {
-      validationErrors.username =
-        "Username must contain only lowercase letters.";
-    }
-
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      validationErrors.email = "Invalid email format.";
-    }
-
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/.test(formData.password)) {
-      validationErrors.password =
-        "Password must contain at least one capital letter, one lowercase letter, one special Character, and a minimum of 8 characters";
-    }
-
-    setErrors(validationErrors);
-
-    return Object.keys(validationErrors).length === 0;
-  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -75,9 +53,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+
     try {
       const { username, email, password } = formData;
       const response = await axios.post(
@@ -95,11 +71,11 @@ const Signup = () => {
         }
       );
       console.log(response);
-      setMessage(response?.data?.message); ///////need to console.log(message);
-      setTimeout(() => navigate("/SignIn"), 1500);
+      setErrorsSuccess(response?.data?.message); ///////need to console.log(message);
+      navigate("/signin")
     } catch (error) {
       if (error) {
-        setMessage(error.response.data.message);
+        setErrorsSuccess(error.response.data.message); /// need to print error message from server 
       }
     }
   };
@@ -164,17 +140,10 @@ const Signup = () => {
                   </InputGroup>
                 </Form.Group>
 
-                {errors.username && (
-                  <Alert variant="danger">{errors.username}</Alert>
-                )}
-                {errors.email && <Alert variant="danger">{errors.email}</Alert>}
-                {errors.password && (
-                  <Alert variant="danger">{errors.password}</Alert>
-                )}
-
                 {/* Alert Message */}
                 {/* Display success or error message after API response */}
-                {message && <Alert variant="danger">{message}</Alert>}
+                {errorsSuccess && <Alert variant="danger">{errorsSuccess}</Alert>}
+
                 <div className="text-center">
                   <Button
                     type="submit"

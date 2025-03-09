@@ -43,12 +43,12 @@ const SignIn = () => {
       localStorage.setItem("user", JSON.stringify(user));
       window.dispatchEvent(new Event("storage"))
 
+
+      setErrorMessage(response?.data?.message);
       // ✅ Redirect user based on role
       navigate("/dashboard");
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.message || "Invalid username or password"
-      );
+      setErrorMessage(error.response?.data?.message);
     } finally {
       setLoading(false);
     }

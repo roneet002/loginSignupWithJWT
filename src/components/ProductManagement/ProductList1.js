@@ -27,6 +27,7 @@ const ProductList1 = () => {
      
       } catch (error) {
         console.error("Error fetching products:", error);
+        setMessage(error?.response?.data?.message)
       }
     };
 
@@ -36,10 +37,7 @@ const ProductList1 = () => {
   // ✅ Function to Delete Product
   const handleDelete = async (id) => {
     const token = localStorage.getItem("token");
-    if (!window.confirm("Are you sure you want to delete this product?")){
-      return;
-    }
-
+  
     try {
       const response = await axios.delete(`http://localhost:5000/product/products/${id}`, {
         headers: {
@@ -61,9 +59,7 @@ const ProductList1 = () => {
 
       {/* ✅ Show delete success message */}
       {message && (
-        <Alert variant={message.includes("✅") ? "success" : "danger"}>
-          {message}
-        </Alert>
+        <Alert variant="danger">{message}</Alert>
       )}
 
       <Button
