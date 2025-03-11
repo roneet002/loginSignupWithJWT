@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // ✅ Import jwtDecode
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -12,20 +13,24 @@ function Header() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
-      setIsLoggedIn(true);
-      // ✅ Get user details from local storage (or fetch from API)
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        setUsername(JSON.parse(storedUser).username);
+      try {
+        const decodedToken = jwtDecode(token); // ✅ Decode JWT token
+        setIsLoggedIn(true);
+        setUsername(decodedToken.username || "User"); // ✅ Extract username safely
+      } catch (error) {
+        console.error("Invalid token:", error);
+        setIsLoggedIn(false);
       }
+    } else {
+      setIsLoggedIn(false);
     }
-  }, [localStorage.token]);
+  }, []); // ✅ No localStorage.token in dependency array
 
   const handleSignOut = () => {
     localStorage.removeItem("token"); // Remove token
-    localStorage.removeItem("user"); // Remove user data
-    window.dispatchEvent(new Event("storage"))
+    window.dispatchEvent(new Event("storage")); // ✅ Trigger storage event for other tabs
     setIsLoggedIn(false);
     setUsername("");
     navigate("/signin"); // Redirect to Sign In page
@@ -38,9 +43,8 @@ function Header() {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0" navbarScroll>
-            <Nav.Link href="/dashboard">
-              Dashboard
-            </Nav.Link>
+            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+            <Link to="/dashboard">Dashboard</Link>
           </Nav>
 
           {/* Show username and Sign Out button when logged in */}

@@ -55,7 +55,7 @@ const ProductDetails = () => {
           <Card.Text>Brand: {product?.brand}</Card.Text>
           <Card.Text>Category: {product?.category}</Card.Text>
 
-          <Button variant="secondary" onClick={() => navigate("/dashboard")}>
+          <Button variant="secondary" onClick={() => navigate("/")}>
             Back to Products
           </Button>
         </Card.Body>

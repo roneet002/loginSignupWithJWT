@@ -38,14 +38,26 @@ const isTokenValid = (token) => {
     return false;
   }
 };
-// ProtectedRoute component to protect certain routes (needs implementation)
 
-// const ProtectedRoute = ({Children}) =>{
-//1. check if the user is authenticated using the token
-//2. if the token is invalid or expired, redirect to signin page.
-//3. if valid, render the child component
+// const isTokenValid = (token) => {
+//   try {
+//     if (!token) return false; // If no token, return false
 
-// }
+//     const decodedToken = jwtDecode(token);
+
+//     // If the token has an expiration time, check if it's still valid
+//     if (decodedToken.exp && decodedToken.exp * 1000 < Date.now()) {
+//       return false; // Token expired
+//     }
+
+//     return true; // Token is valid
+//   } catch (error) {
+//     console.error("❌ Error decoding token:", error);
+//     return false; // Invalid token
+//   }
+// };
+
+
 const ProtectedRoute = ({ children }) => {
 
   const token = localStorage.getItem("token");
@@ -55,6 +67,15 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/signin" replace />;
   }
 };
+// ProtectedRoute component to protect certain routes (needs implementation)
+
+// const ProtectedRoute = ({Children}) =>{
+//1. check if the user is authenticated using the token
+//2. if the token is invalid or expired, redirect to signin page.
+//3. if valid, render the child component
+
+// }
+
 
 
 
